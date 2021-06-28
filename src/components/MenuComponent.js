@@ -4,8 +4,10 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 're
 // import logo from './logo.svg';
 // import { Navbar, NavbarBrand } from 'reactstrap';
 // import './App.css';
+import DishdetailComponent from './DishdetailComponent';
 
 class Menu extends Component {
+
     constructor(props) {
         super(props);
 
@@ -13,47 +15,40 @@ class Menu extends Component {
             selectedDish: null
         }
     }
-    
+
     onDishSelect(dish) {
         this.setState({ selectedDish: dish});
     }
 
     renderDish(dish) {
-        if(dish != null) {
+        if (dish != null)
             return(
                 <Card>
-                   <CardImg width="100%" object src={ dish.image } alt={ dish.name }/>
-                   <CardBody>
-                     <CardTitle>{ dish.name }</CardTitle>
-                     <CardText>{ dish.description}</CardText>
-                    </CardBody> 
+                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardBody>
+                      <CardTitle>{dish.name}</CardTitle>
+                      <CardText>{dish.description}</CardText>
+                    </CardBody>
                 </Card>
             );
-        }
-        else {
+        else
             return(
                 <div></div>
             );
-        }
     }
 
     render() {
-        const menu = this.props.dishes.map((dish)=> {
-            return ( 
-            //for every dish I'm going to return a layout 
-            //construct the view for each of items in dishes
-            //mt-5=give a top margin of 5 units
-            //whenever you construct a list of items in React, every item requires a key 
-            //property to uniquely identifyeach item that has been rendered in here.
-            //Using Media class. Read Reactstrap documentation on how to use Media class
-                <div key={ dish.id } className="col-12 col-md-5 m-1"> 
-                    <Card onClick={() => this.onDishSelect(dish)}>
-                        <CardImg width="100%" object src={ dish.image } alt={ dish.name }/>
-                        <CardImgOverlay>
-                            <CardTitle>{ dish.name }</CardTitle>
-                        </CardImgOverlay>
-                    </Card>
-                </div>
+        const menu = this.props.dishes.map((dish) => {
+            return (
+              <div  className="col-12 col-md-5 m-1">
+                <Card key={dish.id}
+                  onClick={() => this.onDishSelect(dish)}>
+                  <CardImg width="100%" src={dish.image} alt={dish.name} />
+                  <CardImgOverlay>
+                      <CardTitle>{dish.name}</CardTitle>
+                  </CardImgOverlay>
+                </Card>
+              </div>
             );
         });
 
@@ -63,11 +58,13 @@ class Menu extends Component {
                     {menu}
                 </div>
                 <div className="row">
+                  <div  className="col-12 col-md-5 m-1">
                     {this.renderDish(this.state.selectedDish)}
+                  </div>
                 </div>
             </div>
         );
-     }
+    }
 }
 
 export default Menu;
