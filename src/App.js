@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
-import { Navbar, NavbarBrand } from 'reactstrap';
-import Menu from './components/MenuComponent';
-// import DishdetailComponent from './components/DishdetailComponent';
+import Main from './components/MainComponent';
 import './App.css';
-import { DISHES } from './shared/dishes';
 
 // function App() {
 class App extends Component {
@@ -12,25 +8,22 @@ class App extends Component {
   //In order to store a state, we need to define 
   //the state in the constructor of the class component
 
-  constructor(props) {
-    super(props);
+  // When we've moved the state to the Main component, and we're no longer storing 
+  // any state in the App Component and can remove constructor completely. And App Component
+  // itself receives no props.
 
-    this.state = {
-      dishes: DISHES
-    };
-  }
-  //Now we can make this state information available to the Menu component 
-  //through props from the App.js file
+  // constructor(props) {
+  //   super(props);
+
+  //   this.state = {
+  //     dishes: DISHES
+  //   };
+  // }
 
   render() {
-      return (
-      <div className="App">
-      <Navbar dark color="primary">
-        <div className="container">
-          <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-        </div>
-      </Navbar>
-      <Menu dishes={ this.state.dishes }/>
+    return (
+      <div>
+        <Main />
       </div>
     );
   }
