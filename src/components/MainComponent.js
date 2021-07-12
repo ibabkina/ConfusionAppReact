@@ -27,7 +27,7 @@ const mapStateToProps = state => {
       // from the Redux's Store by connecting this component to the Redux Store
       // (see the last line of code in this file).
       dishes: state.dishes,
-      comments: state.comment,
+      comments: state.comments,
       promotions: state.promotions,
       leaders: state.leaders
       // Now inside this main component, all the Redux state becomes available as props
@@ -92,3 +92,4 @@ class Main extends Component {
 }
 
 export default withRouter(connect(mapStateToProps)(Main));
+
