@@ -13,6 +13,8 @@ import Footer from './FooterComponent';
 // import { LEADERS } from '../shared/leaders';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { addComment } from '../redux/ActionCreators';
+
 
 // This will map the Redux Store's state into props that will become available
 // to main component.
@@ -33,6 +35,10 @@ const mapStateToProps = state => {
       // Now inside this main component, all the Redux state becomes available as props
     }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  addComment: (dishId, rating, author, comment) => dispatch(addComment (dishId, rating, author, comment))
+}); //this can be used within our Main component
 
 // Making MainComponent to be a container component
 class Main extends Component {
@@ -66,10 +72,12 @@ class Main extends Component {
       }
 
       //Function component
+      //accComment passed in Dishdetail component => we can make use of this function to dispatch the action to the Store.
       const DishWithId = ({match}) => {
           return(
             <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} //will convert in base 10 int here
             comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+            addComment={this.props.addComment}
             />
             );
       }
@@ -91,5 +99,7 @@ class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+//Supplying as parameters to connect(). When we connect them, mapStateToProps, mapDispatchToProps
+//become available within Main Component.
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
 
