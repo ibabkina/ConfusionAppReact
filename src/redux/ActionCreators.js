@@ -5,15 +5,57 @@ import { baseUrl } from '../shared/baseUrl';
 //This function creates an action object. after defining the action object you 
 // you send it to the store. This is going to send various parts of the comment to the store
 // so it should change just the comment's part of the state.
-export const addComment = (dishId, rating, author, comment) => ({
+
+// export const addComment = (dishId, rating, author, comment) => ({
+//     type: ActionTypes.ADD_COMMENT,
+//     payload: {
+//         dishId: dishId,
+//         rating: rating,
+//         author: author,
+//         comment: comment
+//     }
+// });
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: {
+    payload: comment
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => { //since it's a thunk we need to add dispatch (send a function of a function)
+
+    const newComment = {
         dishId: dishId,
         rating: rating,
         author: author,
         comment: comment
-    }
-});
+    };
+    newComment.date = new Date().toISOString();
+    
+    return fetch(baseUrl + 'comments', {
+        method: "POST",
+        body: JSON.stringify(newComment),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error =>  { console.log('post comments', error.message); 
+        alert('Your comment could not be posted\nError: '+error.message); });
+};
+
 
 // Thunk
 export const fetchDishes = () => (dispatch) => {
