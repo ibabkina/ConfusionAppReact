@@ -13,7 +13,7 @@ import Footer from './FooterComponent';
 // import { LEADERS } from '../shared/leaders';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
 
 
 // This will map the Redux Store's state into props that will become available
@@ -37,8 +37,10 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) => dispatch(addComment (dishId, rating, author, comment))
-}); //this can be used within our Main component
+  addComment: (dishId, rating, author, comment) => dispatch(addComment (dishId, rating, author, comment)),
+  fetchDishes: () => {dispatch(fetchDishes())}
+  //addComment and fetchDishes can be used within our Main component
+});
 
 // Making MainComponent to be a container component
 class Main extends Component {
@@ -57,14 +59,26 @@ class Main extends Component {
     // };
   }
 
+  // Lifecycle method of our component. Whatever is included in this method, will bound, 
+  // will be called or will be execured just after this component get's mounted into the view of my application.
+  // When the main component is being mounted into my view by my React app, at that point after it gets mounted
+  // the fetchDishes will be called and this will result in a call to fetch the dishes and then load it
+  // into my redux's store, and then they become available for the application. 
+  componentDidMount() {
+    this.props.fetchDishes();
+  }
+
+
   render() {
 
     const HomePage = () => {
         return(
           // Whatever we were using as this state here will have to be changed to these props
           // Everywhere you see this.state, you change it to this.props
-            <Home 
-                dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+          // The dish info is no longer at the props.dishes because the object has changes(look in dishes.js)
+                <Home dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
+                dishesLoading={this.props.dishes.isLoading}
+                dishesErrMess={this.props.dishes.errMess}
                 promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
                 leader={this.props.leaders.filter((leader) => leader.featured)[0]}
             />
@@ -75,7 +89,9 @@ class Main extends Component {
       //accComment passed in Dishdetail component => we can make use of this function to dispatch the action to the Store.
       const DishWithId = ({match}) => {
           return(
-            <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} //will convert in base 10 int here
+            <Dishdetail dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} //will convert in base 10 int here
+            isLoading={this.props.dishes.isLoading}
+            ErrMess={this.props.dishes.errMess}
             comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
             addComment={this.props.addComment}
             />
