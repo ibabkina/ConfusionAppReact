@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap'; // helps construct menu
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
     //  function RenderMenuItem(props)  
      function RenderMenuItem({ dish, onClick })  {
@@ -11,7 +12,8 @@ import { Loading } from './LoadingComponent';
             <Card>
               <Link to={`/menu/${dish.id}`}> 
               {/* the corresponding value will be replaced here with dish from DISHES */}
-              <CardImg width="100%" src={dish.image} alt={dish.name} />
+              <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} /> 
+              {/* Now we can go and delete all the imgs from assets folder other than logo.png -logo is only one that kept localy now */}
               <CardImgOverlay>
                   <CardTitle>{dish.name}</CardTitle>
             </CardImgOverlay>

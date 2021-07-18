@@ -1,6 +1,7 @@
 // import { DISHES } from '../shared/dishes';
 import * as ActionTypes from './ActionTypes';
 
+// This is dishes reducer
 // When you implement the Reducer function, it takes two parameters (state and action).
 // At this moment we haven't implemented any actions, we only have the default. The default
 // return is DISHES as it is.
