@@ -13,7 +13,7 @@ import Footer from './FooterComponent';
 // import { LEADERS } from '../shared/leaders';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -44,6 +44,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
   fetchComments: () => {dispatch(fetchComments())},
   fetchPromos: () => {dispatch(fetchPromos())},
+  fetchLeaders: () => {dispatch(fetchLeaders())}
 });
 
 // Making MainComponent to be a container component
@@ -72,6 +73,7 @@ class Main extends Component {
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
+    this.props.fetchLeaders();
     // this ensures that when the main component is mounted then I'll go and fetch all these from that server
   }
 
@@ -90,7 +92,9 @@ class Main extends Component {
                 promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
                 promoLoading={this.props.promotions.isLoading}
                 promoErrMess={this.props.promotions.errMess}
-                leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+                leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+                leadersLoading={this.props.leaders.isLoading}
+                leadersErrMess={this.props.leaders.errMess}
             />
         );
       }

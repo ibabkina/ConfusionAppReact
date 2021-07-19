@@ -1,33 +1,54 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
+import {Loading} from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 function RenderLeader({ leader }) {
     return (
       <div className="col-12 mt-5"> 
-        <Media tag="li">
-            <Media left middle>
-                    <Media object src={leader.image} alt={leader.name} />
-            </Media>
-            <Media body className="ml-5">
-                    <Media heading>{leader.name}</Media>
-                        <p>{leader.designation}</p>
-                        <p>{leader.description}</p>
-                    </Media>
+            <Media tag="li">
+                <Media left middle>
+                        <Media object src={baseUrl + leader.image} alt={leader.name} />
+                </Media>
+                <Media body className="ml-5">
+                        <Media heading>{leader.name}</Media>
+                            <p>{leader.designation}</p>
+                            <p>{leader.description}</p>
+                        </Media>
             </Media>
       </div>
     );
   }
 
-
-
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    if(props.leaders.isLoading) {
+        return(
+          <div className="container">
+            <div className="row">
+              <Loading />
+            </div>
+          </div>
+        );
+      }
+    else if (props.leaders.errMess) {
+        return(
+          <div className="container">
+              <div className="row">
+                <h4>{props.leaders.errMess}</h4>
+              </div>
+            </div>
+        );
+      }
+    else if (props.leaders != null) {
+
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
             <div className="col-12">
               <RenderLeader leader={leader} />
+            {/* //   isLoading={props.leaders.leadersLoading}
+            //   errMess={props.leaders.leadersErrMess} /> */}
           </div>
         );
     });
@@ -94,6 +115,7 @@ function About(props) {
             </div>
         </div>
     );
+}
 }
 
 export default About;    
